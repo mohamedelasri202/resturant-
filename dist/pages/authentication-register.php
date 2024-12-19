@@ -69,131 +69,89 @@ include ("db.php");
 
 
 
-<?php  
-$usr = "SELECT password FROM users WHERE email =? ";
- $stmt = mysqli_prepare($db , $usr);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
- if ($stmt) {
-    mysqli_stmt_bind_param($stmt, "s", $email);
-    mysqli_stmt_execute($stmt);
-    mysqli_stmt_store_result($stmt);
-
-    if (mysqli_stmt_num_rows($stmt) > 0) {
-        mysqli_stmt_bind_result($stmt, $db_password);
-        mysqli_stmt_fetch($stmt);
-
-        if ($password === $db_password) {
-            $message = "Login successful";
-            $toastClass = "bg-success";
-
-            // Start the session and redirect to the dashboard or home page
-            session_start();
-            $_SESSION['email'] = $email;
-            header("Location: dashboard.php");
-            exit();
-        } else {
-            $message = "Incorrect password";
-            $toastClass = "bg-danger";
-        }
-    } else {
-        $message = "Email not found";
-        $toastClass = "bg-warning";
-    }
-
-    mysqli_stmt_close($stmt);
-} else {
-    $message = "Error preparing statement: " . mysqli_error($db);
-    $toastClass = "bg-danger";
-}
-            
-
-
-
-
-?> 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
 <script src="../assets/libs/simplebar/dist/simplebar.min.js"></script>
 <script src="../assets/libs/iconify-icon/dist/iconify-icon.min.js"></script>
