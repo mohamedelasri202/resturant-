@@ -5,29 +5,22 @@ include("db.php");
 if (isset($_POST['login'])) {
     // Sanitize inputs
     $email = mysqli_real_escape_string($db, $_POST['email']);
-    $password = $_POST['password'];
+    $password = mysqli_real_escape_string($db, $_POST['password']); // Changed to match your current setup
     
-    // Query to check user credentials
-    $query = "SELECT * FROM users WHERE email = ?";
-    $stmt = mysqli_prepare($db, $query);
-    mysqli_stmt_bind_param($stmt, "s", $email);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
+    // Modified query to match your database structure
+    $query = "SELECT * FROM users WHERE email = '$email' AND password_hash = '$password'";
+    $result = mysqli_query($db, $query);
     
-    if ($row = mysqli_fetch_assoc($result)) {
-        // Verify password (assuming password_hash was used to store passwords)
-        if (password_verify($password, $row['password_hash'])) {
-            // Set session variables
-            $_SESSION['user_id'] = $row['id'];
-            $_SESSION['username'] = $row['name'];
-            $_SESSION['email'] = $row['email'];
-            
-            // Redirect to dashboard
-            header("Location: dashboard.php");
-            exit();
-        } else {
-            $error = "Invalid email or password";
-        }
+    if (mysqli_num_rows($result) == 1) {
+        $row = mysqli_fetch_assoc($result);
+        // Set session variables
+        $_SESSION['user_id'] = $row['id'];
+        $_SESSION['username'] = $row['name'];
+        $_SESSION['email'] = $row['email'];
+        
+        // Redirect to dashboard
+        header("Location: dashboard.php");
+        exit();
     } else {
         $error = "Invalid email or password";
     }
