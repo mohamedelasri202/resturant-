@@ -231,9 +231,9 @@ if (isset($_POST['submit'])) {
 
 <?php
 
-// $showplates = "SELECT * FROM plates ";
+$showplates = "SELECT * FROM plates ";
 
-// $mysql = mysqli_query($db , $showplates);
+$mysql = mysqli_query($db , $showplates);
 
 
 
@@ -247,7 +247,7 @@ if (isset($_POST['submit'])) {
 
 <?php
 
-// while ($row =mysqli_fetch_assoc($mysql)){
+while ($row =mysqli_fetch_assoc($mysql)){
 
 
 
