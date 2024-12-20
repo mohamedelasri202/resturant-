@@ -2,7 +2,7 @@
 
 include ("../pages/db.php");
 
-// $cln = "SELECT name , email FROM users where id_role = 2  " ;
+$cln = "SELECT name , email FROM users where id_role = 2  " ;
 
 $sql =mysqli_query($db ,$cln);
 
