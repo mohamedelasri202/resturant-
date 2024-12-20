@@ -2,24 +2,59 @@
 include("../pages/db.php");
 
 if (isset($_POST['submit'])) {
+    // Clean input data
     $name = mysqli_real_escape_string($db, $_POST['name']);
-    $photoName = mysqli_real_escape_string($db, $_POST['photo']); // Sanitize input
-    $description = mysqli_real_escape_string($db, $_POST['description']); // Sanitize input
+    $description = mysqli_real_escape_string($db, $_POST['description']);
 
-    // Insert data into the database
-    $PLT = "INSERT INTO plates (name, photo, description) VALUES ('$name', '$photoName', '$description')";
+    $target_dir = "uploads/";
+    $target_file = $target_dir . basename($_FILES["photo"]["name"]);
+    $uploadOk = 1;
+    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-    $pltes = mysqli_query($db, $PLT);
-
-    if ($pltes) {
-        echo "Data successfully saved!";
-    } else {
-        echo "Error: " . mysqli_error($db);
+    if (isset($_POST["submit"])) {
+        $check = getimagesize($_FILES["photo"]["tmp_name"]);
+        if ($check !== false) {
+            echo "File is an image - " . $check["mime"] . ".";
+            $uploadOk = 1;
+        } else {
+            echo "File is not an image.";
+            $uploadOk = 0;
+        }
     }
+
+    if (file_exists($target_file)) {
+        echo "Sorry, file already exists.";
+        $uploadOk = 0;
+    }
+
+    if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
+        echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+        $uploadOk = 0;
+    }
+
+    if ($uploadOk == 0) {
+        echo "Sorry, your file was not uploaded.";
+    } else {
+        if (move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file)) {
+            echo "The file " . htmlspecialchars(basename($_FILES["photo"]["name"])) . " has been uploaded.";
+
+            // Insert data into the database
+            $PLT = "INSERT INTO plates (name, photo, description) VALUES ('$name', '$target_file', '$description')";
+            $pltes = mysqli_query($db, $PLT);
+
+            if ($pltes) {
+                echo "Data successfully saved!";
+            } else {
+                echo "Error: " . mysqli_error($db);
+            }
+        } else {
+            echo "Sorry, there was an error uploading your file.";
+        }
+    }
+} else {
+    echo "Form not submitted.";
 }
 ?>
-
-
 
 
 
@@ -231,9 +266,9 @@ if (isset($_POST['submit'])) {
 
 <?php
 
-$showplates = "SELECT * FROM plates ";
+// $showplates = "SELECT * FROM plates ";
 
-$mysql = mysqli_query($db , $showplates);
+// $mysql = mysqli_query($db , $showplates);
 
 
 
@@ -247,7 +282,7 @@ $mysql = mysqli_query($db , $showplates);
 
 <?php
 
-while ($row =mysqli_fetch_assoc($mysql)){
+while ($row = mysqli_fetch_assoc($mysql)){
 
 
 
@@ -255,13 +290,6 @@ while ($row =mysqli_fetch_assoc($mysql)){
 
 
 ?>
-
-
-
-
-
-
-
 
 
 
@@ -274,68 +302,21 @@ while ($row =mysqli_fetch_assoc($mysql)){
 												<div class="card overflow-hidden">
 													<div class=" bg-white">
 														<img class="w-full h-auto rounded-t-xl"
-															src="../assets/images/products/product-1.jpg"
+													 src="<?php echo $row["photo"]  ?>"
 															alt="Image Description">
 														<div class="card-body">
 															<h3 class="text-lg font-medium text-gray-500">
-															<?php  echo $row ["name"]   ?>  
+															<?php  echo $row["name"]   ?>  
 															</h3>
 															<p class="mt-1 text-sm text-gray-400">
-															<?php   echo $row ["description"] ?>
+															<?php   echo $row["description"] ?>
 															</p>
 														</div>
 													</div>
 												</div>
 											</div>
-											<div class="flex flex-col gap-6  bg-gray-200">
-                        <div  class="flex justify-between mx-8">	<h6 class="text-lg text-gray-500 font-semibold">Card</h6>
-                           <button><i class="fa-solid fa-pen-to-square"></i></button>
-                          <button><i class="fa-solid fa-trash-can"></i></button>
-                        </div>
-											
-												<div class="card overflow-hidden">
-													<div class=" bg-white">
-														<img class="w-full h-auto rounded-t-xl"
-															src="../assets/images/products/product-1.jpg"
-															alt="Image Description">
-														<div class="card-body">
-															<h3 class="text-lg font-medium text-gray-500">
-																Card title
-															</h3>
-															<p class="mt-1 text-sm text-gray-400">
-															<?php  echo $row["description"]   ?>
-															</p>
-									
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="flex flex-col gap-6 bg-gray-200">
-                        <div  class="flex justify-between mx-8" >
-                          <h6 class="text-lg text-gray-500 font-semibold">Card</h6>
-                           <button><i class="fa-solid fa-pen-to-square"></i></button>
-                          <button><i class="fa-solid fa-trash-can"></i></button>
-
-                        </div>
-												
-												<div class="card overflow-hidden">
-													<div class=" bg-white">
-														<img class="w-full h-auto rounded-t-xl"
-															src="../assets/images/products/product-1.jpg"
-															alt="Image Description">
-														<div class="card-body">
-															<h3 class="text-lg font-medium text-gray-500">
-																Card title
-															</h3>
-															<p class="mt-1 text-sm text-gray-400">
-																Some quick example text to build on the card title and
-																make up the bulk of the card's content.
-															</p>
-									
-														</div>
-													</div>
-												</div>
-											</div>
+										
+										
                       <?php
         }
 ?>
@@ -357,7 +338,7 @@ while ($row =mysqli_fetch_assoc($mysql)){
     <div class="text-2xl py-4 px-6 bg-gray-900 text-white text-center font-bold uppercase">
       Add A plate
     </div>
-    <form class="py-4 px-6" action="" method="POST">
+    <form class="py-4 px-6"  method="POST" enctype="multipart/form-data">
         <div class="mb-4">
             <label class="block text-gray-700 font-bold mb-2" for="name">
                 Name
