@@ -1,3 +1,21 @@
+<?php
+
+include ("../pages/db.php");
+
+// $cln = "SELECT name , email FROM users where id_role = 2  " ;
+
+$sql =mysqli_query($db ,$cln);
+
+
+
+
+
+
+
+
+?>
+
+
 <!DOCTYPE html>
 <html   lang="en" >
 
@@ -47,7 +65,7 @@
         </li>
 
         <li class="sidebar-item">
-          <a class="sidebar-link gap-3 py-2.5 my-1 text-base  flex items-center relative  rounded-md text-gray-500  w-full" href="../index.html"
+          <a class="sidebar-link gap-3 py-2.5 my-1 text-base  flex items-center relative  rounded-md text-gray-500  w-full" href="../dahboard.php"
            >
             <i class="ti ti-layout-dashboard ps-2  text-2xl"></i> <span>Dashboard</span>
           </a>
@@ -139,53 +157,7 @@
                 </li>
            
             <li class="relative">
-                
-    <div class="hs-dropdown relative inline-flex [--placement:bottom-left] sm:[--trigger:hover]">
-        <a class="relative hs-dropdown-toggle inline-flex hover:text-gray-500 text-gray-300" href="#">
-            <i class="ti ti-bell-ringing text-xl relative z-[1]"></i>
-            <div
-                class="absolute inline-flex items-center justify-center  text-white text-[11px] font-medium  bg-blue-600 w-2 h-2 rounded-full -top-[1px] -right-[6px]">
-            </div>
-        </a>
-        <div class="card hs-dropdown-menu transition-[opacity,margin] rounded-md duration hs-dropdown-open:opacity-100 opacity-0 mt-2 min-w-max  w-[300px] hidden z-[12]"
-            aria-labelledby="hs-dropdown-custom-icon-trigger">
-            <div>
-               <h3 class="text-gray-500 font-semibold text-base px-6 py-3">Notification</h3>
-               <ul class="list-none  flex flex-col">
-                <li>
-               <a href="#" class="py-3 px-6 block hover:bg-gray-200">
-                <p class="text-sm text-gray-500 font-medium">Roman Joined the Team!</p>
-                <p class="text-xs text-gray-400 font-medium">Congratulate him</p>
-               </a>
-                </li>
-                <li>
-                <a href="#" class="py-3 px-6 block hover:bg-gray-200">
-                    <p class="text-sm text-gray-500 font-medium">New message received</p>
-                    <p class="text-xs text-gray-400 font-medium">Salma sent you new message</p>
-                </a>
-                </li>
-                <li>
-                  <a href="#" class="py-3 px-6 block hover:bg-gray-200">
-                    <p class="text-sm text-gray-500 font-medium">New Payment received</p>
-                    <p class="text-xs text-gray-400 font-medium">Check your earnings</p>
-                  </a>
-                </li>
-                <li>
-                 <a href="#" class="py-3 px-6 block hover:bg-gray-200">
-                    <p class="text-sm text-gray-500 font-medium">Jolly completed tasks</p>
-                    <p class="text-xs text-gray-400 font-medium">Assign her new tasks</p>
-                 </a>
-                </li>
-                <li>
-                  <a href="#" class="py-3 px-6 block hover:bg-gray-200">
-                    <p class="text-sm text-gray-500 font-medium">Roman Joined the Team!</p>
-                    <p class="text-xs text-gray-400 font-medium">Congratulate him</p>
-                  </a>
-                </li>
-               </ul>
-            </div>
-        </div>
-    </div>
+   
 
             </li>
             </ul>
@@ -234,82 +206,44 @@
       <tr class="text-sm">
         <th scope="col" class="p-4 font-semibold">name</th>
         <th scope="col" class="p-4 font-semibold">Email</th>
-        <th scope="col" class="p-4 font-semibold">password</th>
+        <th scope="col" class="p-4 font-semibold">Role</th>
+       
+     
 
       </tr>
     </thead>
+    <?php
+        // while($row= mysqli_fetch_assoc($sql)){
+
+        
+        ?>
+
+
+
+
     <tbody>
       <tr>
         <td class="p-4 text-sm">
              <div class="flex gap-6 items-center">
 
           <div class="flex flex-col gap-1 text-gray-500">
-            <h3 class=" font-bold">Mark J. Freeman</h3>
-            <span class="font-normal">Prof. English</span>
-          </div>
-           </div>
-        </td>
-        <td class="p-4">
-            <h3 class="font-medium">$150/hour</h3>
-        </td>
-        <td class="p-4">
-          <h3 class="font-medium text-teal-500">+53</h3>
-        </td>
-       
-      </tr>
-      <tr>
-        <td class="p-4 text-sm">
-            <div class="flex gap-6 items-center">
+            <h3 class=" font-bold"><?php   echo $row["name"]?></h3>
         
-          <div class="flex flex-col gap-1 text-gray-500">
-            <h3 class=" font-bold">Nina R. Oldman</h3>
-            <span class="font-normal">Prof. History</span>
           </div>
            </div>
         </td>
         <td class="p-4">
-           <h3 class="font-medium">$150/hour</h3>
+            <h3 class="font-medium"><?php   echo $row["email"]?></h3>
         </td>
         <td class="p-4">
-          <h3 class="font-medium text-teal-500">+68</h3>
+            <h3 class="font-medium"><?php   echo $row["email"]?></h3>
         </td>
-     
-      </tr>
-      <tr>
-        <td class="p-4 text-sm">
-           <div class="flex gap-6 items-center">
-   
-          <div class="flex flex-col gap-1 text-gray-500">
-            <h3 class=" font-bold">Arya H. Shah</h3>
-            <span class="font-normal">Prof. Maths</span>
-          </div>
-           </div>
-        </td>
-        <td class="p-4">
-           <h3 class="font-medium">$150/hour</h3>
-        </td>
-        <td class="p-4">
-          <h3 class="font-medium text-teal-500">+94</h3>
-        </td>
+        
+    <?php
+        }
+?>
        
-      </tr>
-      <tr>
-        <td class="p-4 text-sm">
-          <div class="flex gap-6 items-center">
-
-          <div class="flex flex-col gap-1 text-gray-500">
-            <h3 class=" font-bold">June R. Smith</h3>
-            <span class="font-normal">Prof. Arts</span>
-          </div>
-           </div>
         </td>
-        <td class="p-4">
-    <h3 class="font-medium">$150/hour</h3>
-        </td>
-        <td class="p-4">
-          <h3 class="font-medium text-teal-500">+27</h3>
-        </td>
-      
       </tr>
 
 
@@ -319,12 +253,148 @@
 
 
 				</main>
-				<!-- Main Content End -->
 				
 			</div>
 		</div>
-		<!--end of project-->
+      <div class="max-w-md mx-auto mt-10 bg-white shadow-lg rounded-lg overflow-hidden">
+    <div class="text-2xl py-4 px-6 bg-gray-900 text-white text-center font-bold uppercase">
+        Book an Appointment
+    </div>
+    <form class="py-4 px-6" action="" method="POST">
+        <div class="mb-4">
+            <label class="block text-gray-700 font-bold mb-2" for="name">
+                Name
+            </label>
+            <input
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="name" type="text" placeholder="Enter your name">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 font-bold mb-2" for="email">
+                Email
+            </label>
+            <input
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="email" type="email" placeholder="Enter your email">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 font-bold mb-2" for="phone">
+                Phone Number
+            </label>
+            <input
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="phone" type="tel" placeholder="Enter your phone number">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 font-bold mb-2" for="date">
+                Date
+            </label>
+            <input
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="date" type="date" placeholder="Select a date">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 font-bold mb-2" for="time">
+                Time
+            </label>
+            <input
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="time" type="time" placeholder="Select a time">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 font-bold mb-2" for="service">
+                Service
+            </label>
+            <select
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="service" name="service">
+                <option value="">Select a service</option>
+                <option value="haircut">Haircut</option>
+                <option value="coloring">Coloring</option>
+                <option value="styling">Styling</option>
+                <option value="facial">Facial</option>
+            </select>
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 font-bold mb-2" for="message">
+                Message
+            </label>
+            <textarea
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="message" rows="4" placeholder="Enter any additional information"></textarea>
+        </div>
+        <div class="flex items-center justify-center mb-4">
+            <button
+                class="bg-gray-900 text-white py-2 px-4 rounded hover:bg-gray-800 focus:outline-none focus:shadow-outline"
+                type="submit">
+                Book Appointment
+            </button>
+        </div>
+
+    </form>
+</div>
+
 	</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 	

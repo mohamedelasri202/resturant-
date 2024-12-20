@@ -2,31 +2,82 @@
 session_start();
 include("db.php");
 
+// Enable error reporting
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Debug: Check if form was submitted
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    error_log("Form submitted");
+    error_log("POST data: " . print_r($_POST, true));
+}
+
 if (isset($_POST['login'])) {
-    // Sanitize inputs
-    $email = mysqli_real_escape_string($db, $_POST['email']);
-    $password = mysqli_real_escape_string($db, $_POST['password']); // Changed to match your current setup
+    $email = $_POST['email'];
+    $password = $_POST['password'];
     
-    // Modified query to match your database structure
-    $query = "SELECT * FROM users WHERE email = '$email' AND password_hash = '$password'";
-    $result = mysqli_query($db, $query);
+    // Debug: Log submitted credentials
+    error_log("Login attempt with email: " . $email);
     
-    if (mysqli_num_rows($result) == 1) {
-        $row = mysqli_fetch_assoc($result);
-        // Set session variables
-        $_SESSION['user_id'] = $row['id'];
-        $_SESSION['username'] = $row['name'];
-        $_SESSION['email'] = $row['email'];
-        
-        // Redirect to dashboard
-        header("Location: dashboard.php");
-        exit();
+    // Debug: Verify database connection
+    if (!$db) {
+        error_log("Database connection failed");
+        $error = "Database connection error";
     } else {
-        $error = "Invalid email or password";
+        // Prepare a JOIN query to get the role name
+        $stmt = $db->prepare("
+            SELECT users.*, roles.nom AS role_name
+            FROM users
+            INNER JOIN roles ON users.id_role = roles.id
+            WHERE users.email = ?
+        ");
+        
+        if (!$stmt) {
+            error_log("Prepare failed: " . $db->error);
+            $error = "Database error occurred";
+        } else {
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            
+            // Debug: Log query results
+            error_log("Query result rows: " . $result->num_rows);
+            
+            if ($result->num_rows === 1) {
+                $row = $result->fetch_assoc();
+                
+                // Debug: Log password comparison
+                error_log("Stored password: " . $row['password_hash']);
+                error_log("Submitted password: " . $password);
+                
+                if ($password === $row['password_hash']) {
+                    error_log("Password match successful");
+                    $_SESSION['user_id'] = $row['id'];
+                    $_SESSION['username'] = $row['name'];
+                    $_SESSION['email'] = $row['email'];
+                    $_SESSION['role'] = $row['role_name'];
+                    
+                    // Debug: Log session data
+                    error_log("Session data set: " . print_r($_SESSION, true));
+                    
+                    if ($_SESSION['role'] === 'admin') {
+                        header("Location:../dashboard.php");
+                    } else {
+                        header("Location:../../index.php ");
+                    }
+                    exit();
+                } else {
+                    error_log("Password match failed");
+                    $error = "Invalid email or password";
+                }
+            } else {
+                error_log("No user found with email: " . $email);
+                $error = "Invalid email or password";
+            }
+        }
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -57,11 +108,13 @@ if (isset($_POST['login'])) {
                         </div>
                     <?php endif; ?>
 
-                    <form method="POST" action="">
+                    <!-- Added specific action path and debug info -->
+                    <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
                         <div class="mb-4">
                             <label for="email" class="block text-sm mb-2 text-gray-400">Email</label>
                             <input type="email" id="email" name="email" required
-                                class="py-3 px-4 block w-full border-gray-200 rounded-sm text-sm focus:border-blue-600 focus:ring-0">
+                                class="py-3 px-4 block w-full border-gray-200 rounded-sm text-sm focus:border-blue-600 focus:ring-0"
+                                value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
                         </div>
                         
                         <div class="mb-6">

@@ -1,3 +1,42 @@
+<?php
+include("../pages/db.php");
+
+// if (isset($_POST['submit'])) {
+    $name = mysqli_real_escape_string($db, $_POST['name']);
+    // $photoName = mysqli_real_escape_string($db, $_POST['photo']); // Sanitize input
+    // $description = mysqli_real_escape_string($db, $_POST['description']); // Sanitize input
+
+    // Insert data into the database
+    // $PLT = "INSERT INTO plates (name, photo, description) VALUES ('$name', '$photoName', '$description')";
+
+    $pltes = mysqli_query($db, $PLT);
+
+    if ($pltes) {
+        echo "Data successfully saved!";
+    } else {
+        echo "Error: " . mysqli_error($db);
+    }
+}
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -48,7 +87,7 @@
         </li>
 
         <li class="sidebar-item">
-          <a class="sidebar-link gap-3 py-2.5 my-1 text-base  flex items-center relative  rounded-md text-gray-500  w-full" href="../index.html"
+          <a class="sidebar-link gap-3 py-2.5 my-1 text-base  flex items-center relative  rounded-md text-gray-500  w-full" href="../index.php"
            >
             <i class="ti ti-layout-dashboard ps-2  text-2xl"></i> <span>Dashboard</span>
           </a>
@@ -60,7 +99,7 @@
         </li>
 
         <li class="sidebar-item">
-          <a class="sidebar-link gap-3 py-2.5 my-1 text-base   flex items-center relative  rounded-md text-gray-500  w-full" href="../components/Reservations.html"
+          <a class="sidebar-link gap-3 py-2.5 my-1 text-base   flex items-center relative  rounded-md text-gray-500  w-full" href="../components/Reservations.php"
            >
            <i class="fa-solid fa-book"></i> <span>Reservations</span>
 
@@ -68,21 +107,21 @@
         </li>
 
         <li class="sidebar-item">
-          <a class="sidebar-link gap-3 py-2.5 my-1 text-base   flex items-center relative  rounded-md text-gray-500  w-full" href="../components/Clients.html"
+          <a class="sidebar-link gap-3 py-2.5 my-1 text-base   flex items-center relative  rounded-md text-gray-500  w-full" href="../components/Clients.php"
            >
            <i class="fas fa-users"></i> <span>Clients</span>
           </a>
         </li>        
 
         <li class="sidebar-item">
-          <a class="sidebar-link gap-3 py-2.5 my-1 text-base   flex items-center relative  rounded-md text-gray-500  w-full" href="../components/plates.html"
+          <a class="sidebar-link gap-3 py-2.5 my-1 text-base   flex items-center relative  rounded-md text-gray-500  w-full" href="../components/plates.php"
            >
            <i class="fa-solid fa-bowl-food"></i> <span>Plates</span>
           </a>
         </li>   
 
         <li class="sidebar-item">
-          <a class="sidebar-link gap-3 py-2.5 my-1 text-base   flex items-center relative  rounded-md text-gray-500  w-full" href="../components/menu.html"
+          <a class="sidebar-link gap-3 py-2.5 my-1 text-base   flex items-center relative  rounded-md text-gray-500  w-full" href="../components/menu.php"
            >
            <i class="fas fa-book-open"></i> <span>Menus</span>
           </a>
@@ -96,14 +135,14 @@
         </li>
 
         <li class="sidebar-item">
-          <a class="sidebar-link gap-3 py-2.5 my-1 text-base   flex items-center relative  rounded-md text-gray-500  w-full" href="../pages/authentication-login.html"
+          <a class="sidebar-link gap-3 py-2.5 my-1 text-base   flex items-center relative  rounded-md text-gray-500  w-full" href="../pages/authentication-login.php"
            >
             <i class="ti ti-login ps-2 text-2xl"></i> <span>Login</span>
           </a>
         </li>
 
         <li class="sidebar-item">
-          <a class="sidebar-link gap-3 py-2.5 my-1 text-base   flex items-center relative  rounded-md text-gray-500  w-full" href="../pages/authentication-register.html"
+          <a class="sidebar-link gap-3 py-2.5 my-1 text-base   flex items-center relative  rounded-md text-gray-500  w-full" href="../pages/authentication-register.php"
            >
             <i class="ti ti-user-plus ps-2 text-2xl"></i> <span>Register</span>
           </a>
@@ -147,44 +186,7 @@
           <button class="bg-blue-500 h-10 w-24 rounded-[40px] font-bold hover:bg-blue-700  ">add PLate</button>
            
         </a>
-        <div class="card hs-dropdown-menu transition-[opacity,margin] rounded-md duration hs-dropdown-open:opacity-100 opacity-0 mt-2 min-w-max  w-[300px] hidden z-[12]"
-            aria-labelledby="hs-dropdown-custom-icon-trigger">
-            <div>
-               <h3 class="text-gray-500 font-semibold text-base px-6 py-3">Notification</h3>
-               <ul class="list-none  flex flex-col">
-                <li>
-               <a href="#" class="py-3 px-6 block hover:bg-gray-200">
-                <p class="text-sm text-gray-500 font-medium">Roman Joined the Team!</p>
-                <p class="text-xs text-gray-400 font-medium">Congratulate him</p>
-               </a>
-                </li>
-                <li>
-                <a href="#" class="py-3 px-6 block hover:bg-gray-200">
-                    <p class="text-sm text-gray-500 font-medium">New message received</p>
-                    <p class="text-xs text-gray-400 font-medium">Salma sent you new message</p>
-                </a>
-                </li>
-                <li>
-                  <a href="#" class="py-3 px-6 block hover:bg-gray-200">
-                    <p class="text-sm text-gray-500 font-medium">New Payment received</p>
-                    <p class="text-xs text-gray-400 font-medium">Check your earnings</p>
-                  </a>
-                </li>
-                <li>
-                 <a href="#" class="py-3 px-6 block hover:bg-gray-200">
-                    <p class="text-sm text-gray-500 font-medium">Jolly completed tasks</p>
-                    <p class="text-xs text-gray-400 font-medium">Assign her new tasks</p>
-                 </a>
-                </li>
-                <li>
-                  <a href="#" class="py-3 px-6 block hover:bg-gray-200">
-                    <p class="text-sm text-gray-500 font-medium">Roman Joined the Team!</p>
-                    <p class="text-xs text-gray-400 font-medium">Congratulate him</p>
-                  </a>
-                </li>
-               </ul>
-            </div>
-        </div>
+    
     </div>
 
             </li>
@@ -226,12 +228,45 @@
   <!-- ========== END HEADER ========== -->
 						</header>
 						<!--  Header End -->
+
+<?php
+
+// $showplates = "SELECT * FROM plates ";
+
+// $mysql = mysqli_query($db , $showplates);
+
+
+
+?>
+
 						<div class="card">
 							<div class="card-body">
 										<div
 											class="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
-											<div class="flex flex-col gap-6 bg-gray-200">
-                        <div class="flex justify-between mx-8" >	<h6 class="text-lg text-gray-500 font-semibold">Card</h6>
+
+
+<?php
+
+// while ($row =mysqli_fetch_assoc($mysql)){
+
+
+
+
+
+
+?>
+
+
+
+
+
+
+
+
+
+
+											<div class="flex flex-col gap-6 bg-gray-200 ">
+                        <div class="flex justify-between mx-8" >	
                            <button><i class="fa-solid fa-pen-to-square"></i></button>
                           <button><i class="fa-solid fa-trash-can"></i></button>
                         </div>
@@ -243,11 +278,10 @@
 															alt="Image Description">
 														<div class="card-body">
 															<h3 class="text-lg font-medium text-gray-500">
-																Card title
+															<?php  echo $row ["name"]   ?>  
 															</h3>
 															<p class="mt-1 text-sm text-gray-400">
-																Some quick example text to build on the card title and
-																make up the bulk of the card's content.
+															<?php   echo $row ["description"] ?>
 															</p>
 														</div>
 													</div>
@@ -269,8 +303,7 @@
 																Card title
 															</h3>
 															<p class="mt-1 text-sm text-gray-400">
-																Some quick example text to build on the card title and
-																make up the bulk of the card's content.
+															<?php  echo $row["description"]   ?>
 															</p>
 									
 														</div>
@@ -303,7 +336,9 @@
 													</div>
 												</div>
 											</div>
-										
+                      <?php
+        }
+?>
 										</div>
 									</div>
 						</div>
@@ -318,7 +353,48 @@
 		<!--end of project-->
 	</main>
 
+  <div class="max-w-md mx-auto mt-10 bg-white shadow-lg rounded-lg overflow-hidden">
+    <div class="text-2xl py-4 px-6 bg-gray-900 text-white text-center font-bold uppercase">
+      Add A plate
+    </div>
+    <form class="py-4 px-6" action="" method="POST">
+        <div class="mb-4">
+            <label class="block text-gray-700 font-bold mb-2" for="name">
+                Name
+            </label>
+            <input
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="name" type="text" placeholder="Enter your name" name="name">
+        </div>
+    
+  
+   
+        <div class="max-w-sm">
+    <label for="photobutton" class="text-xs font-medium text-gray-500"> Photo</label>
+    <div class="relative z-0 mt-0.5 flex w-full -space-x-px">
+        <input id="photobutton" name="photo" type="file" class="block w-full cursor-pointer appearance-none rounded-l-md border border-gray-200 bg-white px-3 py-2 text-sm transition focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75">
+      
+    </div>
+</div>
+     
+        <div class="mb-4">
+            <label class="block text-gray-700 font-bold mb-2" for="message">
+              Description
+            </label>
+            <textarea
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="message" rows="4" placeholder="Enter any additional information" name="description"></textarea>
+        </div>
+        <div class="flex items-center justify-center mb-4">
+            <button
+                class="bg-gray-900 text-white py-2 px-4 rounded hover:bg-gray-800 focus:outline-none focus:shadow-outline"
+                type="submit" name="submit">
+              add a palte
+            </button>
+        </div>
 
+    </form>
+</div>
 	
 <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
 <script src="../assets/libs/simplebar/dist/simplebar.min.js"></script>
