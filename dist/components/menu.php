@@ -1,3 +1,32 @@
+<?php
+include ("../pages/db.php");
+
+if (isset($_POST['submit'])){
+  $title =$_POST["title"];
+$description =$_POST["description"];
+
+$sss = "INSERT INTO menu (title ,description  ) VALUES ('$title','$description') ";
+$kkk =mysqli_query($db , $sss);
+
+}
+
+
+
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html   lang="en" >
 
@@ -368,6 +397,151 @@
 				
 			</div>
 		</div>
+
+
+    <div class="max-w-md mx-auto mt-10 bg-white shadow-lg rounded-lg overflow-hidden">
+    <div class="text-2xl py-4 px-6 bg-gray-900 text-white text-center font-bold uppercase">
+       Add a Menu
+    </div>
+    <form class="py-4 px-6" action="" method="POST">
+        <div class="mb-4">
+            <label class="block text-gray-700 font-bold mb-2" for="name">
+                Title
+            </label>
+            <input
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="name" type="text" placeholder="Enter your name" name="title">
+        </div>
+     
+      
+   
+        
+        
+        <div class="mb-4">
+            <label class="block text-gray-700 font-bold mb-2" for="message" >
+           Descripton
+            </label>
+            <textarea
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="message" rows="4" placeholder="Enter any additional information" name="description"></textarea>
+        </div>
+        <div class="flex items-center justify-center mb-4">
+            <button
+                class="bg-gray-900 text-white py-2 px-4 rounded hover:bg-gray-800 focus:outline-none focus:shadow-outline"
+                type="submit" name="submit">
+                Book Appointment
+            </button>
+        </div>
+
+    </form>
+</div>
+
+
+<div class="bg-white border rounded-lg px-8 py-6 mx-auto my-8 max-w-[30vw]
+    <h2 class="text-2xl font-medium mb-4">Survey</h2>
+    <form>
+       
+        <div class="mb-4">
+            <label for="gender" class="block text-gray-700 font-medium mb-2">Gender</label>
+            <select id="gender" name="gender"
+                class="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400" required>
+                <option value="">Select a menu</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+        <div class="mb-4">
+            <label for="gender" class="block text-gray-700 font-medium mb-2">Gender</label>
+            <select id="gender" name="gender"
+                class="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400" required>
+                <option value="">Select a plate</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+     
+
+
+
+        <div class="mb-4">
+            <label class="block text-gray-700 font-medium mb-2"> your plate type</label>
+            <div class="flex flex-wrap -mx-2">
+                <div class="px-2 w-1/3">
+                    <label for="color-red" class="block text-gray-700 font-medium mb-2">
+                        <input type="radio" id="color-red" name="color" value="red" class="mr-2">entree
+                    </label>
+                </div>
+                <div class="px-2 w-1/3">
+                    <label for="color-blue" class="block text-gray-700 font-medium mb-2">
+                        <input type="radio" id="color-blue" name="color" value="blue" class="mr-2">main
+                    </label>
+                </div>
+                <div class="px-2 w-1/3">
+                    <label for="color-blue" class="block text-gray-700 font-medium mb-2">
+                        <input type="radio" id="color-blue" name="color" value="blue" class="mr-2">dessert
+                    </label>
+                </div>
+             
+            </div>
+        </div>
+   
+     
+        <div>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Submit</button>
+        </div>
+
+    </form>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		<!--end of project-->
 	</main>
 
