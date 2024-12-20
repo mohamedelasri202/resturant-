@@ -266,9 +266,9 @@ if (isset($_POST['submit'])) {
 
 <?php
 
-// $showplates = "SELECT * FROM plates ";
+$showplates = "SELECT * FROM plates ";
 
-// $mysql = mysqli_query($db , $showplates);
+$mysql = mysqli_query($db , $showplates);
 
 
 
