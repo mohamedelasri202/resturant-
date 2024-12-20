@@ -213,7 +213,7 @@ $sql =mysqli_query($db ,$cln);
       </tr>
     </thead>
     <?php
-        // while($row= mysqli_fetch_assoc($sql)){
+        while($row= mysqli_fetch_assoc($sql)){
 
         
         ?>
