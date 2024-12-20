@@ -1,30 +1,66 @@
 <?php
 include ("../pages/db.php");
 
-if (isset($_POST['submit'])){
-  $title =$_POST["title"];
-$description =$_POST["description"];
-
-$sss = "INSERT INTO menu (title ,description  ) VALUES ('$title','$description') ";
-$kkk =mysqli_query($db , $sss);
-
+// First form handling - menu creation
+if (isset($_POST['submit'])) {
+    $title = mysqli_real_escape_string($db, $_POST["title"]);
+    $description = mysqli_real_escape_string($db, $_POST["description"]);
+    
+    $sss = "INSERT INTO menu (title, description) VALUES ('$title', '$description')";
+    $kkk = mysqli_query($db, $sss);
+    
+    if (!$kkk) {
+        echo "Error creating menu: " . mysqli_error($db);
+    }
 }
 
+// Second form handling - menu_plates creation
+if (isset($_POST['submit_plates'])) {  
+    $menu = mysqli_real_escape_string($db, $_POST['menu']);
+    $plates = mysqli_real_escape_string($db, $_POST['plates']);
+    $type = mysqli_real_escape_string($db, $_POST['type']);
+    
+    $kk = "INSERT INTO menu_plates (menu_id, plate_id, type) VALUES ('$menu', '$plates', '$type')";
+    $MYSQKK = mysqli_query($db, $kk);
+    
+    if (!$MYSQKK) {
+        echo "Error adding plate to menu: " . mysqli_error($db);
+    }
+}
 
+// Fetch menu data for display
+$rsrv = "SELECT m.id as menu_id, m.title, m.description, 
+         GROUP_CONCAT(p.name ORDER BY mp.type SEPARATOR ', ') as plates,
+         GROUP_CONCAT(mp.type ORDER BY mp.type SEPARATOR ', ') as plate_types
+         FROM menu m
+         LEFT JOIN menu_plates mp ON m.id = mp.menu_id
+         LEFT JOIN plates p ON mp.plate_id = p.id
+         GROUP BY m.id
+         ORDER BY m.id DESC";
+
+$result = mysqli_query($db, $rsrv);
+
+if (!$result) {
+    die("Query failed: " . mysqli_error($db));
+}
+
+// Fetch menus for the select dropdown
+$menu = "SELECT * FROM menu ORDER BY title";
+$sqlmenu = mysqli_query($db, $menu);
+
+if (!$sqlmenu) {
+    die("Menu query failed: " . mysqli_error($db));
+}
+
+// Fetch plates for the select dropdown
+$mnu = "SELECT * FROM plates ORDER BY name";
+$sqlmnu = mysqli_query($db, $mnu);
+
+if (!$sqlmnu) {
+    die("Plates query failed: " . mysqli_error($db));
+}
 
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <!DOCTYPE html>
@@ -217,284 +253,189 @@ $kkk =mysqli_query($db , $sss);
   <!-- ========== END HEADER ========== -->
 				</header>
 				<!--  Header End -->
-                <div class="card">
-                    <div class="card-body flex flex-col gap-6">
-                        <h6 class="text-lg text-gray-500 font-semibold">Menus</h6>
-                      	<div
-											class="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
-											<div class="flex flex-col gap-6 items-center bg-gray-200">
-                        <div class="flex justify-between  w-[20vw] ">	<h6 class="text-lg text-gray-500 font-semibold">Card</h6>
-                          <button><i class="fa-solid fa-pen-to-square"></i></button>
-                          <button><i class="fa-solid fa-trash-can"></i></button>
-                        </div>
-											
-												<div class="card overflow-hidden">
-													<div class=" bg-white flex">
-														<img class="w-[10vw] h-[20vh] rounded-t-xl"
-															src="../assets/images/products/product-1.jpg"
-															alt="Image Description"> 	<div class="card-body">
-                                <h3 class="text-lg font-medium text-gray-500">
-                                  Card title
-                                </h3>
-                                <p class="mt-1 text-sm text-gray-400">
-                                  Some quick example text to build on the card title and
-                                  make up the bulk of the card's content.
-                                </p>
-                              </div>
-                              
-													
-													</div>
-													<div class=" bg-white flex">
-														<img class="w-[10vw] h-[20vh] rounded-t-xl"
-															src="../assets/images/products/product-1.jpg"
-															alt="Image Description"> 	<div class="card-body">
-                                <h3 class="text-lg font-medium text-gray-500">
-                                  Card title
-                                </h3>
-                                <p class="mt-1 text-sm text-gray-400">
-                                  Some quick example text to build on the card title and
-                                  make up the bulk of the card's content.
-                                </p>
-                              </div>
-                              
-													
-													</div>
-													<div class=" bg-white flex">
-														<img class="w-[10vw] h-[20vh] rounded-t-xl"
-															src="../assets/images/products/product-1.jpg"
-															alt="Image Description"> 	<div class="card-body">
-                                <h3 class="text-lg font-medium text-gray-500">
-                                  Card title
-                                </h3>
-                                <p class="mt-1 text-sm text-gray-400">
-                                  Some quick example text to build on the card title and
-                                  make up the bulk of the card's content.
-                                </p>
-                              </div>
-                              
-													
-													</div>
-												</div>
-											</div>
-											<div class="flex flex-col gap-6 items-center bg-gray-200">
-                        <div class="flex justify-between  w-[20vw] ">	<h6 class="text-lg text-gray-500 font-semibold">Card</h6>
-                          <button><i class="fa-solid fa-pen-to-square"></i></button>
-                          <button><i class="fa-solid fa-trash-can"></i></button>
-                        </div>
-											
-												<div class="card overflow-hidden">
-													<div class=" bg-white flex">
-														<img class="w-[10vw] h-[20vh] rounded-t-xl"
-															src="../assets/images/products/product-1.jpg"
-															alt="Image Description"> 	<div class="card-body">
-                                <h3 class="text-lg font-medium text-gray-500">
-                                  Card title
-                                </h3>
-                                <p class="mt-1 text-sm text-gray-400">
-                                  Some quick example text to build on the card title and
-                                  make up the bulk of the card's content.
-                                </p>
-                              </div>
-                              
-													
-													</div>
-													<div class=" bg-white flex">
-														<img class="w-[10vw] h-[20vh] rounded-t-xl"
-															src="../assets/images/products/product-1.jpg"
-															alt="Image Description"> 	<div class="card-body">
-                                <h3 class="text-lg font-medium text-gray-500">
-                                  Card title
-                                </h3>
-                                <p class="mt-1 text-sm text-gray-400">
-                                  Some quick example text to build on the card title and
-                                  make up the bulk of the card's content.
-                                </p>
-                              </div>
-                              
-													
-													</div>
-													<div class=" bg-white flex">
-														<img class="w-[10vw] h-[20vh] rounded-t-xl"
-															src="../assets/images/products/product-1.jpg"
-															alt="Image Description"> 	<div class="card-body">
-                                <h3 class="text-lg font-medium text-gray-500">
-                                  Card title
-                                </h3>
-                                <p class="mt-1 text-sm text-gray-400">
-                                  Some quick example text to build on the card title and
-                                  make up the bulk of the card's content.
-                                </p>
-                              </div>
-                              
-													
-													</div>
-												</div>
-											</div>
-											<div class="flex flex-col gap-6 items-center bg-gray-200">
-                        <div class="flex justify-between  w-[20vw] ">	<h6 class="text-lg text-gray-500 font-semibold">Card</h6>
-                          <button><i class="fa-solid fa-pen-to-square"></i></button>
-                          <button><i class="fa-solid fa-trash-can"></i></button>
-                        </div>
-											
-												<div class="card overflow-hidden">
-													<div class=" bg-white flex">
-														<img class="w-[10vw] h-[20vh] rounded-t-xl"
-															src="../assets/images/products/product-1.jpg"
-															alt="Image Description"> 	<div class="card-body">
-                                <h3 class="text-lg font-medium text-gray-500">
-                                  Card title
-                                </h3>
-                                <p class="mt-1 text-sm text-gray-400">
-                                  Some quick example text to build on the card title and
-                                  make up the bulk of the card's content.
-                                </p>
-                              </div>
-                              
-													
-													</div>
-													<div class=" bg-white flex">
-														<img class="w-[10vw] h-[20vh] rounded-t-xl"
-															src="../assets/images/products/product-1.jpg"
-															alt="Image Description"> 	<div class="card-body">
-                                <h3 class="text-lg font-medium text-gray-500">
-                                  Card title
-                                </h3>
-                                <p class="mt-1 text-sm text-gray-400">
-                                  Some quick example text to build on the card title and
-                                  make up the bulk of the card's content.
-                                </p>
-                              </div>
-                              
-													
-													</div>
-													<div class=" bg-white flex">
-														<img class="w-[10vw] h-[20vh] rounded-t-xl"
-															src="../assets/images/products/product-1.jpg"
-															alt="Image Description"> 	<div class="card-body">
-                                <h3 class="text-lg font-medium text-gray-500">
-                                  Card title
-                                </h3>
-                                <p class="mt-1 text-sm text-gray-400">
-                                  Some quick example text to build on the card title and
-                                  make up the bulk of the card's content.
-                                </p>
-                              </div>
-                              
-													
-													</div>
-												</div>
-											</div>
-										
-
-										 </div>
-                     </div>
-                     </div>
-					           </div>
 
 
-				</main>
-				<!-- Main Content End -->
-				
-			</div>
-		</div>
 
 
-    <div class="max-w-md mx-auto mt-10 bg-white shadow-lg rounded-lg overflow-hidden">
-    <div class="text-2xl py-4 px-6 bg-gray-900 text-white text-center font-bold uppercase">
-       Add a Menu
-    </div>
-    <form class="py-4 px-6" action="" method="POST">
-        <div class="mb-4">
-            <label class="block text-gray-700 font-bold mb-2" for="name">
-                Title
-            </label>
-            <input
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="name" type="text" placeholder="Enter your name" name="title">
+
+        <?php
+$rsrv = "SELECT menu_plates.*, 
+                plates.*, 
+                menu.* 
+         FROM menu_plates
+         INNER JOIN plates ON menu_plates.plate_id = plates.id
+         INNER JOIN menu ON menu_plates.menu_id = menu.id";
+
+$result = mysqli_query($db, $rsrv);
+
+if (!$result) {
+    die("Query failed: " . mysqli_error($db));
+}
+?>
+
+<?php
+include ("../pages/db.php");
+
+// Your existing PHP logic here (keep all the PHP code from before)
+?>
+
+<!-- Styled Add Menu Form -->
+<div class="max-w-xl mx-auto mt-8">
+    <div class="bg-white rounded-lg shadow-xl overflow-hidden">
+        <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-6">
+            <h2 class="text-2xl font-bold text-white">Create New Menu</h2>
+            <p class="text-blue-100 mt-1">Add a new menu to your collection</p>
         </div>
-     
-      
-   
         
-        
-        <div class="mb-4">
-            <label class="block text-gray-700 font-bold mb-2" for="message" >
-           Descripton
-            </label>
-            <textarea
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="message" rows="4" placeholder="Enter any additional information" name="description"></textarea>
-        </div>
-        <div class="flex items-center justify-center mb-4">
-            <button
-                class="bg-gray-900 text-white py-2 px-4 rounded hover:bg-gray-800 focus:outline-none focus:shadow-outline"
-                type="submit" name="submit">
-                Book Appointment
-            </button>
-        </div>
-
-    </form>
-</div>
-
-
-<div class="bg-white border rounded-lg px-8 py-6 mx-auto my-8 max-w-[30vw]
-    <h2 class="text-2xl font-medium mb-4">Survey</h2>
-    <form>
-       
-        <div class="mb-4">
-            <label for="gender" class="block text-gray-700 font-medium mb-2">Gender</label>
-            <select id="gender" name="gender"
-                class="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400" required>
-                <option value="">Select a menu</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-            </select>
-        </div>
-        <div class="mb-4">
-            <label for="gender" class="block text-gray-700 font-medium mb-2">Gender</label>
-            <select id="gender" name="gender"
-                class="border border-gray-400 p-2 w-full rounded-lg focus:outline-none focus:border-blue-400" required>
-                <option value="">Select a plate</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-            </select>
-        </div>
-     
-
-
-
-        <div class="mb-4">
-            <label class="block text-gray-700 font-medium mb-2"> your plate type</label>
-            <div class="flex flex-wrap -mx-2">
-                <div class="px-2 w-1/3">
-                    <label for="color-red" class="block text-gray-700 font-medium mb-2">
-                        <input type="radio" id="color-red" name="color" value="red" class="mr-2">entree
-                    </label>
-                </div>
-                <div class="px-2 w-1/3">
-                    <label for="color-blue" class="block text-gray-700 font-medium mb-2">
-                        <input type="radio" id="color-blue" name="color" value="blue" class="mr-2">main
-                    </label>
-                </div>
-                <div class="px-2 w-1/3">
-                    <label for="color-blue" class="block text-gray-700 font-medium mb-2">
-                        <input type="radio" id="color-blue" name="color" value="blue" class="mr-2">dessert
-                    </label>
-                </div>
-             
+        <form class="p-8 space-y-6" action="" method="POST">
+            <div class="space-y-2">
+                <label class="text-sm font-medium text-gray-700" for="title">
+                    Menu Title
+                </label>
+                <input 
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" 
+                    type="text" 
+                    id="title" 
+                    name="title" 
+                    placeholder="Enter menu title"
+                    required
+                >
             </div>
-        </div>
-   
-     
-        <div>
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Submit</button>
-        </div>
-
-    </form>
+            
+            <div class="space-y-2">
+                <label class="text-sm font-medium text-gray-700" for="description">
+                    Description
+                </label>
+                <textarea 
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" 
+                    id="description" 
+                    name="description" 
+                    rows="4" 
+                    placeholder="Describe your menu"
+                    required
+                ></textarea>
+            </div>
+            
+            <button 
+                type="submit" 
+                name="submit" 
+                class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+            >
+                <i class="fas fa-plus-circle"></i>
+                Create Menu
+            </button>
+        </form>
+    </div>
 </div>
 
+<!-- Styled Add Plates to Menu Form -->
+<div class="max-w-xl mx-auto my-12">
+    <div class="bg-white rounded-lg shadow-xl overflow-hidden">
+        <div class="bg-gradient-to-r from-purple-500 to-purple-600 p-6">
+            <h2 class="text-2xl font-bold text-white">Add Plates to Menu</h2>
+            <p class="text-purple-100 mt-1">Customize your menu with delicious plates</p>
+        </div>
+        
+        <form class="p-8 space-y-6" action="" method="POST">
+            <div class="space-y-2">
+                <label class="text-sm font-medium text-gray-700">Select Menu</label>
+                <div class="relative">
+                    <select 
+                        name="menu" 
+                        required 
+                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 appearance-none transition-colors bg-white"
+                    >
+                        <option value="">Choose a menu</option>
+                        <?php 
+                        $menu_query = "SELECT * FROM menu ORDER BY title";
+                        $menu_result = mysqli_query($db, $menu_query);
+                        while ($row = mysqli_fetch_assoc($menu_result)) { 
+                        ?>
+                            <option value="<?php echo $row['id']; ?>">
+                                <?php echo htmlspecialchars($row['title']); ?>
+                            </option>
+                        <?php } ?>
+                    </select>
+                    <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                        <i class="fas fa-chevron-down text-gray-400"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="space-y-2">
+                <label class="text-sm font-medium text-gray-700">Select Plate</label>
+                <div class="relative">
+                    <select 
+                        name="plates" 
+                        required 
+                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 appearance-none transition-colors bg-white"
+                    >
+                        <option value="">Choose a plate</option>
+                        <?php 
+                        $plates_query = "SELECT * FROM plates ORDER BY name";
+                        $plates_result = mysqli_query($db, $plates_query);
+                        while ($row = mysqli_fetch_assoc($plates_result)) { 
+                        ?>
+                            <option value="<?php echo $row['id']; ?>">
+                                <?php echo htmlspecialchars($row['name']); ?>
+                            </option>
+                        <?php } ?>
+                    </select>
+                    <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                        <i class="fas fa-chevron-down text-gray-400"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="space-y-2">
+                <label class="text-sm font-medium text-gray-700">Plate Type</label>
+                <div class="relative">
+                    <select 
+                        name="type" 
+                        required 
+                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 appearance-none transition-colors bg-white"
+                    >
+                        <option value="">Select type</option>
+                        <option value="entree">Entrée</option>
+                        <option value="main">Main Course</option>
+                        <option value="dessert">Dessert</option>
+                    </select>
+                    <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                        <i class="fas fa-chevron-down text-gray-400"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <button 
+                type="submit" 
+                name="submit_plates" 
+                class="w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+            >
+                <i class="fas fa-utensils"></i>
+                Add Plate to Menu
+            </button>
+        </form>
+    </div>
+</div>
+
+<style>
+    /* Custom styles for select dropdowns */
+    select {
+        background-image: none !important;
+    }
+    
+    /* Hover effects for buttons */
+    button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    /* Focus styles for form elements */
+    input:focus, select:focus, textarea:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+    }
+</style>
 
 
 
@@ -515,12 +456,69 @@ $kkk =mysqli_query($db , $sss);
 
 
 
+<!-- Add this right after your existing forms -->
+<div class="card">
+    <div class="card-body">
+        <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-6 gap-x-0 lg:gap-y-0 gap-y-6">
+            <?php
+            // Get all menus
+            $menu_query = "SELECT * FROM menu";
+            $menu_result = mysqli_query($db, $menu_query);
 
+            while ($menu = mysqli_fetch_assoc($menu_result)) {
+                // Get one plate of each type for this menu
+                $plates_query = "SELECT p.*, mp.type 
+                               FROM plates p 
+                               INNER JOIN menu_plates mp ON p.id = mp.plate_id 
+                               WHERE mp.menu_id = {$menu['id']}
+                               GROUP BY mp.type";
+                $plates_result = mysqli_query($db, $plates_query);
+            ?>
+                <div class="flex flex-col gap-6 bg-gray-200">
+                    <div class="flex justify-between mx-8">
+                        <h3 class="text-lg font-medium text-gray-500"><?php echo $menu['title']; ?></h3>
+                    </div>
 
-
-
-
-
+                    <div class="card overflow-hidden">
+                        <div class="bg-white">
+                            <?php
+                            while ($plate = mysqli_fetch_assoc($plates_result)) {
+                            ?>
+                                <div class="mb-4">
+                                    <img class="w-full h-auto rounded-t-xl" 
+                                         src="<?php echo $plate["photo"] ?>" 
+                                         alt="<?php echo $plate["name"] ?>">
+                                    <div class="card-body">
+                                        <div class="flex justify-between">
+                                            <h3 class="text-lg font-medium text-gray-500">
+                                                <?php echo $plate["name"] ?>
+                                            </h3>
+                                            <span class="text-blue-500 font-medium">
+                                                <?php echo ucfirst($plate["type"]) ?>
+                                            </span>
+                                        </div>
+                                        <p class="mt-1 text-sm text-gray-400">
+                                            <?php echo $plate["description"] ?>
+                                        </p>
+                                    </div>
+                                </div>
+                            <?php
+                            }
+                            ?>
+                            <div class="p-4 border-t">
+                                <p class="text-sm text-gray-600">
+                                    <?php echo $menu['description']; ?>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php
+            }
+            ?>
+        </div>
+    </div>
+</div>
 
 
 
