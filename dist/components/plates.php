@@ -1,13 +1,13 @@
 <?php
 include("../pages/db.php");
 
-// if (isset($_POST['submit'])) {
+if (isset($_POST['submit'])) {
     $name = mysqli_real_escape_string($db, $_POST['name']);
-    // $photoName = mysqli_real_escape_string($db, $_POST['photo']); // Sanitize input
-    // $description = mysqli_real_escape_string($db, $_POST['description']); // Sanitize input
+    $photoName = mysqli_real_escape_string($db, $_POST['photo']); // Sanitize input
+    $description = mysqli_real_escape_string($db, $_POST['description']); // Sanitize input
 
     // Insert data into the database
-    // $PLT = "INSERT INTO plates (name, photo, description) VALUES ('$name', '$photoName', '$description')";
+    $PLT = "INSERT INTO plates (name, photo, description) VALUES ('$name', '$photoName', '$description')";
 
     $pltes = mysqli_query($db, $PLT);
 
